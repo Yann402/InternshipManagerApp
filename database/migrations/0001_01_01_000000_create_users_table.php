@@ -13,10 +13,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nom');
+            $table->string('prenom');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['stagiaire','responsable','admin'])->default('stagiaire')->after('password');
+            $table->string('formation')->nullable()->after('role');
+            $table->string('niveau_etude')->nullable()->after('formation');
+            $table->string('telephone')->nullable()->after('niveau_etude');
+            $table->string('adresse')->nullable()->after('telephone');
+            $table->boolean('is_active')->default(true)->after('adresse'); // bloquer/supprimer logiquement un compte
+            $table->timestamp('last_login_at')->nullable()->after('is_active'); // utile pour la sécurité / audits
+            $table->softDeletes(); // permet la récupération si suppression non souhaitée
             $table->rememberToken();
             $table->timestamps();
         });
