@@ -16,23 +16,19 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $roles)
     {
-        // 1) Si pas connecté → rediriger vers login
-        if (! Auth::check()) {
-            return redirect()->route('login'); // ou abort(401)
-        }
 
-        // 2) Récupérer l'utilisateur connecté
+        // 1) Récupérer l'utilisateur connecté
         $user = $request->user(); // équivalent à Auth::user()
 
-        // 3) Supporter plusieurs rôles séparés par une virgule ou pipe
+        // 2) Supporter plusieurs rôles séparés par une virgule ou pipe
         $accepted = array_map('trim', preg_split('/[|,]/', $roles));
 
-        // 4) Si rôle correspondant → laisser passer
+        // 3) Si rôle correspondant → laisser passer
         if (in_array($user->role, $accepted, true)) {
             return $next($request);
         }
 
-        // 5) Sinon : accès refusé (403) ou redirection personnalisée
+        // 4) Sinon : accès refusé (403) ou redirection personnalisée
         abort(403, 'Accès non autorisé.');
     }
 }

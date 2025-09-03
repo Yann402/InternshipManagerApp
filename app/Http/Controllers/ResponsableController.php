@@ -7,6 +7,6 @@ use Illuminate\Http\Request;
 class ResponsableController extends Controller
 {
     public function index() {
-        return view("responsable.interface");
+        return view('responsable.interface');
     }
 }
