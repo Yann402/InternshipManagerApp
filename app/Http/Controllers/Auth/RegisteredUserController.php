@@ -17,8 +17,19 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create(): View  // RedirectResponse|View
     {
+        // if (Auth::check()) {
+        // // Redirection selon rôle
+        // switch (Auth::user()->role) {
+        //     case 'admin':
+        //         return redirect()->route('admin.dashboard');
+        //     case 'responsable':
+        //         return redirect()->route('responsable.interface');
+        //     case 'stagiaire':
+        //         return redirect()->route('stagiaire.interface');
+        // }
+        // }
         return view('auth.register');
     }
 
@@ -30,21 +41,31 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'nom' => ['required', 'string', 'max:255'],
+            'prenom' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'formation' => ['nullable', 'string', 'max:255'],
+            'niveau_etude' => ['nullable', 'string', 'max:255'],
+            'telephone' => ['nullable', 'string', 'max:20'],
+            'adresse' => ['nullable', 'string', 'max:255'],
         ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'formation' => $request->formation,
+            'niveau_etude' => $request->niveau_etude,
+            'telephone' => $request->telephone,
+            'adresse' => $request->adresse,
         ]);
 
 
         event(new Registered($user));
         Auth::login($user);
 
-        return redirect()->intended('/stagiaire/interface');
+        return redirect()->intended('stagiaire.dashboard');
     }
 }

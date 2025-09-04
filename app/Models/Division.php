@@ -17,6 +17,6 @@ class Division extends Model
 
     public function admin(): BelongsTo
     {
-    return $this->belongsTo(User::class, 'admin_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

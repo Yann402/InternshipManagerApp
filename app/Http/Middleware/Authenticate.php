@@ -6,8 +6,9 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
-class Authenticate
+class Authenticate extends Middleware
 {
     /**
      * Handle an incoming request.
@@ -19,9 +20,25 @@ class Authenticate
      */
     protected function redirectTo($request): ?string
     {
-        if (! $request->expectsJson()) {
-            return route('login'); // route générée par Breeze
+        // Si l'utilisateur est déjà connecté
+        if (Auth::check()) {
+            switch (Auth::user()->role) {
+                case 'admin':
+                    return route('admin.dashboard');
+                case 'responsable':
+                    return route('responsable.interface');
+                case 'stagiaire':
+                    return route('stagiaire.dashboard');
+                default:
+                    return route('/'); // fallback
+            }
         }
+
+        // Si l'utilisateur n'est pas connecté et qu'il n'attend pas du JSON
+        if (! $request->expectsJson()) {
+            return route('login');
+        }
+
         return null;
     }
 }

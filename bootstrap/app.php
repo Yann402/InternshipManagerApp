@@ -16,6 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
         'auth' => \App\Http\Middleware\Authenticate::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
         ]);
 
         // Rediriger les invités vers /login

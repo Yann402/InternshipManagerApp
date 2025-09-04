@@ -14,8 +14,19 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(): View  // RedirectResponse|View
     {
+        // if (Auth::check()) {
+        // // Redirection selon rôle
+        // switch (Auth::user()->role) {
+        //     case 'admin':
+        //         return redirect()->route('admin.dashboard');
+        //     case 'responsable':
+        //         return redirect()->route('responsable.interface');
+        //     case 'stagiaire':
+        //         return redirect()->route('stagiaire.interface');
+        // }
+        // }
         return view('auth.login');
     }
 
@@ -36,9 +47,9 @@ class AuthenticatedSessionController extends Controller
             case 'responsable':
                 return redirect()->route('responsable.interface');
             case 'stagiaire':
-                return redirect()->route('stagiaire.interface');
+                return redirect()->route('stagiaire.dashboard');
             default:
-                return redirect()->route('dashboard'); // fallback
+                return redirect()->route('/');
         }
     }
 
@@ -53,6 +64,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('login');
     }
 }
