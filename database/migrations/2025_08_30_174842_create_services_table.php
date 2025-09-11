@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_service');
+            $table->string('nom_service')->unique();
             $table->foreignId('division_id')->constrained('divisions')->onDelete('cascade');
-            $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('admin_id')->nullable()->constrained('users');
+            $table->foreignId('responsable_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

@@ -15,8 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('demande_id')->constrained('demandes')->onDelete('cascade');
             $table->foreignId('type_document_id')->constrained('types_documents')->onDelete('cascade');
-            $table->string('chemin_fichier');
-            $table->enum('statut', ['non_fourni', 'fourni', 'non_généré', 'généré', 'vérifié', 'refusé']);
+            $table->string('chemin_fichier')->nullable();
+            $table->enum('statut', [
+                    'en_attente',   // pour les docs stagiaires
+                    'en_cours',
+                    'valide',
+                    'refuse',
+                    'non_disponible', // pour les docs générés
+                    'disponible'
+            ])->default('en_attente');
             $table->date('date_upload')->nullable();
             $table->timestamps();
         });

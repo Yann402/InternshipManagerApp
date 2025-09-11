@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['stagiaire','responsable','admin'])->default('stagiaire')->after('password');
             $table->string('formation')->nullable()->after('role');
+            $table->string('poste')->nullable()->after('role');
+            $table->string('specialite')->nullable()->after('poste');
             $table->string('niveau_etude')->nullable()->after('formation');
             $table->string('telephone')->nullable()->after('niveau_etude');
             $table->string('adresse')->nullable()->after('telephone');

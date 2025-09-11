@@ -55,7 +55,7 @@ class RegisteredUserController extends Controller
             'nom' => $request->nom,
             'prenom' => $request->prenom,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'formation' => $request->formation,
             'niveau_etude' => $request->niveau_etude,
             'telephone' => $request->telephone,
@@ -66,6 +66,6 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
         Auth::login($user);
 
-        return redirect()->intended('stagiaire.dashboard');
+        return redirect()->route('login');
     }
 }

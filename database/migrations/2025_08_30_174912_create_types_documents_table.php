@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('libelle');
             $table->boolean('obligatoire')->default(false);
             $table->enum('fourni_par', ['stagiaire', 'responsable']);
+            $table->enum('type_fichier', ['pdf', 'image'])->default('pdf');
             $table->timestamps();
         });
     }
