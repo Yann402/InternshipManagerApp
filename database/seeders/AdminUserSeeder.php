@@ -20,7 +20,7 @@ class AdminUserSeeder extends Seeder
             [
                 'nom' => 'Administrateur',
                 'prenom' => 'Super',
-                'password' => Hash::make('Admin123!'), // change immédiatement en prod
+                'password' => 'Admin123!', // change immédiatement en prod
                 'role' => 'admin',
                 'is_active' => true,
                 ]        

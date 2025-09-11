@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Division extends Model
 {
-    protected $fillable = ['nom_division'];
+    protected $fillable = ['nom_division', 'admin_id'];
 
     public function services(): HasMany
     {

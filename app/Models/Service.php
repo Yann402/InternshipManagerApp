@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
-    protected $fillable = ['nom_service','division_id','responsable_id'];
+    protected $fillable = ['nom_service','division_id','responsable_id', 'admin_id'];
 
     public function division(): BelongsTo
     {
