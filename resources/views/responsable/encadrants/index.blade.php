@@ -28,11 +28,11 @@
                     <td class="py-3 px-6">{{ $encadrant->specialite }}</td>
                     <td class="py-3 px-6 text-center space-x-2">
                         <a href="{{ route('responsable.encadrants.edit', $encadrant->id) }}" 
-                           class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">✏️ Modifier</a>
+                           class="bg-yellow-500 text-green-600 px-3 py-1 rounded hover:bg-yellow-600">✏️ Modifier</a>
 
                         <form action="{{ route('responsable.encadrants.destroy', $encadrant->id) }}" method="POST" class="inline">
                             @csrf @method('DELETE')
-                            <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">🗑 Supprimer</button>
+                            <button class="bg-red-500 text-red-600 px-3 py-1 rounded hover:bg-red-600">🗑 Supprimer</button>
                         </form>
                     </td>
                 </tr>

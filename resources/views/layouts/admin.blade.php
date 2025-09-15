@@ -23,6 +23,8 @@
                 @yield('content')
             </main>
 
+            @yield('scripts')
+
             {{-- Footer (commun à tout le monde) --}}
             @include('layouts.partials.footer')
 

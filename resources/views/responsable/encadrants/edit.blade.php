@@ -26,7 +26,7 @@
             <label class="block">Spécialité</label>
             <input type="text" name="specialite" value="{{ $encadrant->specialite }}" class="border rounded px-3 py-2 w-full">
         </div>
-        <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Mettre à jour</button>
+        <button class="bg-green-500 text-gray-100 px-4 py-2 rounded hover:bg-green-600">Mettre à jour</button>
     </form>
 </div>
 @endsection

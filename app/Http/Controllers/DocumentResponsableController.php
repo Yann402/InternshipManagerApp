@@ -71,28 +71,32 @@ class DocumentResponsableController extends Controller
     {
         $doc = Document::findOrFail($id);
 
-        if (!$doc->path || !Storage::disk('public')->exists($doc->path)) {
+        if (!$doc->chemin_fichier || !Storage::disk('public')->exists($doc->chemin_fichier)) {
             abort(404, "Fichier introuvable");
         }
 
-        return response()->file(storage_path('app/public/' . $doc->path));
+        return response()->file(storage_path('app/public/' . $doc->chemin_fichier));
     }
 
-    /**
-     * Supprimer un document généré
-     */
     public function destroy($id)
     {
         $doc = Document::findOrFail($id);
 
-        if ($doc->path && Storage::disk('public')->exists($doc->path)) {
-            Storage::disk('public')->delete($doc->path);
+        // Supprimer le fichier physique
+        if ($doc->chemin_fichier && Storage::disk('public')->exists($doc->chemin_fichier)) {
+            Storage::disk('public')->delete($doc->chemin_fichier);
         }
 
-        $doc->delete();
+        // Mettre à jour le document comme "non disponible"
+        $doc->update([
+            'chemin_fichier' => null,
+            'statut' => 'non_disponible',
+        ]);
 
-        return back()->with('success', 'Document supprimé avec succès');
+        return back()->with('success', 'Le fichier a été supprimé. Le document est marqué comme non disponible.');
     }
+
+
 
     public function update(Request $request, Document $document)
     {
