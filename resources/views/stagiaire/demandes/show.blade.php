@@ -43,4 +43,34 @@
             </ul>
         @endif
     </div>
+
+    <h3 class="text-lg font-semibold mt-4">Encadrant</h3>
+    <div class="bg-white shadow rounded p-4 mt-2">
+        @if($demande->encadrant)
+            <p><strong>Nom :</strong> {{ $demande->encadrant->nom }} {{ $demande->encadrant->prenom }}</p>
+            <p><strong>Email :</strong> {{ $demande->encadrant->email }}</p>
+            <p><strong>Spécialité :</strong> {{ $demande->encadrant->specialite }}</p>
+        @else
+            <p>Aucun encadrant assigné.</p>
+        @endif
+    </div>
+
+    <h3 class="text-lg font-semibold mt-4">Entreprise</h3>
+    <div class="bg-white shadow rounded p-4 mt-2">
+        @if($demande->entreprise)
+            <p><strong>Nom :</strong> {{ $demande->entreprise->nom }}</p>
+            <p><strong>Adresse :</strong> {{ $demande->entreprise->adresse }}</p>
+            <p><strong>Email :</strong> {{ $demande->entreprise->email }}</p>
+            <p><strong>Téléphone :</strong> {{ $demande->entreprise->telephone }}</p>
+        @else
+            <p>Aucune entreprise assignée.</p>
+        @endif
+    </div>
+
+    @if($demande->statut === 'refusée')
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mt-4">
+        <strong>Motif du refus :</strong> {{ $demande->motif_refus ?? 'Non spécifié' }}
+    </div>
+    @endif
+
 @endsection

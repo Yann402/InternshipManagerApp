@@ -6,27 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('encadrants', function (Blueprint $table) {
+        Schema::create('entreprises', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
-            $table->string('prenom');
+            $table->string('adresse')->nullable();
             $table->string('email')->nullable();
             $table->string('telephone')->nullable();
-            $table->string('specialite')->nullable();
+            $table->string('secteur')->nullable(); // Ex: Informatique, BTP, Finance
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('encadrants');
+        Schema::dropIfExists('entreprises');
     }
 };

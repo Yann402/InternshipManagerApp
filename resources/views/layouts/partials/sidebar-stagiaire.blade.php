@@ -1,4 +1,4 @@
-<aside class="w-64 bg-white shadow-md border-r">
+<aside class="w-64 bg-white shadow-md">
     <nav class="mt-6 space-y-6 px-3">
         <!-- Tableau de bord -->
         <a href="{{ route('stagiaire.dashboard') }}" 

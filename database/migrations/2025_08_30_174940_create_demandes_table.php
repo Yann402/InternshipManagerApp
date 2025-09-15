@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // stagiaire
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
             $table->foreignId('encadrant_id')->nullable()->constrained('encadrants')->nullOnDelete();
+            $table->foreignId('entreprise_id')->nullable()->constrained('entreprises')->nullOnDelete();
+            $table->text('motif_refus')->nullable();
             $table->date('date_soumission');
             $table->enum('statut', ['en_attente', 'en_cours', 'validée', 'refusée'])->default('en_attente');
             $table->timestamps();
