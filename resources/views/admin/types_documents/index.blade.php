@@ -5,8 +5,8 @@
     <h1 class="text-2xl font-bold mb-6">Types de documents</h1>
 
     <a href="{{ route('admin.types_documents.create') }}" 
-       class="bg-blue-600 text-gray-100 px-4 py-2 rounded hover:bg-blue-700 mb-4 inline-block">
-       Ajouter un type
+       class="bg-blue-600 text-green-600 px-4 py-2 rounded hover:bg-blue-700 mb-4 inline-block">
+       + Ajouter un type
     </a>
 
     <table class="w-full border-collapse border border-gray-300">

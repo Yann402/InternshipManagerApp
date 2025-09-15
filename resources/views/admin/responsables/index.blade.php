@@ -5,7 +5,7 @@
 @section('content')
 <div class="flex justify-between mb-4">
     <h2 class="text-xl font-semibold">Liste des responsables</h2>
-    <a href="{{ route('admin.responsables.create') }}" class="px-4 py-2 bg-green-600 text-green-600 mr-4 rounded">Ajouter</a>
+    <a href="{{ route('admin.responsables.create') }}" class="px-4 py-2 bg-green-600 text-green-600 mr-4 rounded">+ Ajouter</a>
 </div>
 
 <table class="w-full bg-white rounded shadow">

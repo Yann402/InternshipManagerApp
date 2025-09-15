@@ -8,12 +8,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Demande extends Model
 {
     protected $fillable = [
-        'user_id','service_id','encadrant_id','date_soumission','statut'
+        'user_id',
+        'service_id',
+        'encadrant_id',
+        'date_soumission',
+        'statut', 'entreprise_id', 
+        'motif_refus'
     ];
 
     // Selon ta correspondance actuelle :
     // en_attente ↔ soumis | en_cours ↔ en_cours | refuse ↔ refusé | valide ↔ encadrant_assigne
-    public const STATUTS = ['en_attente','en_cours','refusé','validé'];
+    public const STATUTS = ['en_attente','en_cours','refusé','validée'];
 
     public function stagiaire(): BelongsTo
     {
@@ -28,6 +33,11 @@ class Demande extends Model
     public function encadrant(): BelongsTo
     {
         return $this->belongsTo(Encadrant::class, 'encadrant_id');
+    }
+
+    public function entreprise()
+    {
+    return $this->belongsTo(Entreprise::class, 'entreprise_id');
     }
 
     public function documents(): HasMany

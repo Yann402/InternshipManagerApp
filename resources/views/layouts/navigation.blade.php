@@ -15,6 +15,16 @@
                     <x-nav-link :href="route('stagiaire.dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Interface Stagiaire') }}
                     </x-nav-link>
+
+                {{-- Demandes --}}
+                <x-nav-link :href="route('stagiaire.demandes.index')" :active="request()->routeIs('stagiaire.demandes.*')">
+                    {{ __('Demandes') }}
+                </x-nav-link>
+
+                {{-- Documents --}}
+                <x-nav-link :href="route('stagiaire.documents.index')" :active="request()->routeIs('stagiaire.documents.*')">
+                    {{ __('Documents') }}
+                </x-nav-link>
                 </div>
             </div>
 
