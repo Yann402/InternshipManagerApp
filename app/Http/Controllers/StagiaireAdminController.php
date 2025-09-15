@@ -23,14 +23,16 @@ class StagiaireAdminController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'     => 'required|string|max:255',
+            'nom'     => 'required|string|max:255',
+            'prenom'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
             'service_id' => 'nullable|exists:services,id',
         ]);
 
         User::create([
-            'name'       => $request->name,
+            'nom'       => $request->nom,
+            'prenom'       => $request->prenom,
             'email'      => $request->email,
             'password'   => bcrypt($request->password),
             'role'       => 'stagiaire',
@@ -52,13 +54,15 @@ class StagiaireAdminController extends Controller
         $stagiaire = User::where('role', 'stagiaire')->findOrFail($id);
 
         $request->validate([
-            'name'     => 'required|string|max:255',
+            'nom'     => 'required|string|max:255',
+            'prenom'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email,' . $stagiaire->id,
             'service_id' => 'nullable|exists:services,id',
         ]);
 
         $stagiaire->update([
-            'name'       => $request->name,
+            'nom'       => $request->nom,
+            'prenom'       => $request->prenom,
             'email'      => $request->email,
             'service_id' => $request->service_id,
         ]);

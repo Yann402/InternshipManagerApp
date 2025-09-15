@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="bg-white shadow rounded-lg p-6">
+
     <h2 class="text-lg font-semibold mb-4">📄 Documents fournis par les stagiaires</h2>
 
     <table class="min-w-full bg-white border rounded-lg mb-6">
@@ -9,7 +10,6 @@
             <tr>
                 <th class="py-3 px-6">Type</th>
                 <th class="py-3 px-6">Demande</th>
-                <th class="py-3 px-6">Stagiaire</th>
                 <th class="py-3 px-6">Statut</th>
                 <th class="py-3 px-6 text-center">Actions</th>
             </tr>
@@ -19,7 +19,6 @@
                 <tr class="border-b hover:bg-gray-50">
                     <td class="py-3 px-6">{{ $doc->typeDocument->libelle }}</td>
                     <td class="py-3 px-6">#{{ $doc->demande_id }}</td>
-                    <td class="py-3 px-6">{{ $doc->demande->stagiaire->name }}</td>
                     <td class="py-3 px-6">{{ ucfirst($doc->statut) }}</td>
                     <td class="py-3 px-6 text-center space-x-2">
                         <a href="{{ route('responsable.documents.show', $doc->id) }}"
@@ -51,7 +50,6 @@
             <tr>
                 <th class="py-3 px-6">Type</th>
                 <th class="py-3 px-6">Demande</th>
-                <th class="py-3 px-6">Stagiaire</th>
                 <th class="py-3 px-6">Statut</th>
                 <th class="py-3 px-6 text-center">Actions</th>
             </tr>
@@ -61,7 +59,6 @@
                 <tr class="border-b hover:bg-gray-50">
                     <td class="py-3 px-6">{{ $doc->typeDocument->libelle }}</td>
                     <td class="py-3 px-6">#{{ $doc->demande_id }}</td>
-                    <td class="py-3 px-6">{{ $doc->demande->stagiaire->name }}</td>
                     <td class="py-3 px-6">{{ ucfirst($doc->statut) }}</td>
                     <td class="py-3 px-6 text-center space-x-2">
                         @if($doc->chemin_fichier)
@@ -69,12 +66,29 @@
                                class="bg-blue-500 text-gray-100 px-3 py-1 rounded">Voir</a>
 
                             {{-- Bouton Modifier --}}
-                            <form action="{{ route('responsable.documents.store', [$doc->demande_id, $doc->type_document_id]) }}" 
-                                  method="POST" enctype="multipart/form-data" class="inline">
+                            <form action="{{ route('responsable.documents.store') }}" 
+                                method="POST" enctype="multipart/form-data" 
+                                class="inline"
+                                onsubmit="return checkFile(this)">
                                 @csrf
+                                <input type="hidden" name="demande_id" value="{{ $doc->demande_id }}">
+                                <input type="hidden" name="type_document_id" value="{{ $doc->type_document_id }}">
                                 <input type="file" name="document" class="mb-2">
                                 <button type="submit" class="bg-yellow-500 text-gray-100 px-3 py-1 rounded">Modifier</button>
                             </form>
+
+                            <script>
+                            function checkFile(form) {
+                                const fileInput = form.querySelector('input[name="document"]');
+                                if (!fileInput.value) {
+                                    alert("⚠️ Choisissez un fichier avant de cliquer sur Modifier !");
+                                    return false; // bloque la soumission
+                                }
+                                return true;
+                            }
+                            </script>
+
+
 
                             {{-- Bouton Supprimer --}}
                             <form action="{{ route('responsable.documents.destroy', $doc->id) }}" method="POST" class="inline">
