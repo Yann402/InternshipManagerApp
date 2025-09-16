@@ -26,18 +26,12 @@
         </div>
 
         <div class="mb-4">
-            <label class="block text-gray-700">Service</label>
-            <select name="service_id" class="w-full border p-2 rounded">
-                <option value="">-- Sélectionner un service --</option>
-                @foreach($services as $service)
-                    <option value="{{ $service->id }}" {{ $stagiaire->service_id == $service->id ? 'selected' : '' }}>
-                        {{ $service->libelle }}
-                    </option>
-                @endforeach
-            </select>
+            <label class="block text-gray-700">Nouveau mot de passe (facultatif)</label>
+            <input type="password" name="password" class="w-full border p-2 rounded">
+            <input type="password" name="password_confirmation" placeholder="Confirmer" class="w-full border p-2 rounded mt-2">
         </div>
 
-        <button type="submit" class="bg-blue-500 text-green-600 px-4 py-2 rounded">💾 Mettre à jour</button>
+        <button type="submit" class="bg-blue-500 text-gray-100 px-4 py-2 rounded">💾 Mettre à jour</button>
         <a href="{{ route('admin.stagiaires.index') }}" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded">⬅ Retour</a>
     </form>
 </div>

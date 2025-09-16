@@ -4,7 +4,7 @@
 <div class="bg-white shadow rounded-lg p-6">
     <h2 class="text-xl font-semibold mb-4">👨‍🎓 Liste des stagiaires</h2>
 
-    <a href="{{ route('admin.stagiaires.create') }}" class="bg-indigo-500 text-white px-4 py-2 rounded mb-4 inline-block">➕ Ajouter un stagiaire</a>
+    <a href="{{ route('admin.stagiaires.create') }}" class="bg-indigo-500 text-green-600 px-4 py-2 rounded mb-4 inline-block">➕ Ajouter un stagiaire</a>
 
     @if(session('success'))
         <div class="bg-green-100 text-green-700 p-3 rounded mb-4">{{ session('success') }}</div>
@@ -26,7 +26,12 @@
                     <td class="py-3 px-6">{{ $stagiaire->nom }}</td>
                     <td class="py-3 px-6">{{ $stagiaire->prenom }}</td>
                     <td class="py-3 px-6">{{ $stagiaire->email }}</td>
-                    <td class="py-3 px-6">{{ $stagiaire->service?->libelle ?? 'Non assigné' }}</td>
+                    <td class="py-3 px-6">
+                        <a href="{{ route('admin.stagiaires.show', $stagiaire->id) }}" 
+                        class="bg-indigo-500 text-indigo-600 px-3 py-1 rounded">
+                        Voir
+                        </a>
+                    </td>
                     <td class="py-3 px-6 text-center space-x-2">
                         <a href="{{ route('admin.stagiaires.edit', $stagiaire->id) }}" class="bg-blue-500 text-green-600 px-3 py-1 rounded">✏️ Modifier</a>
                         <form action="{{ route('admin.stagiaires.destroy', $stagiaire->id) }}" method="POST" class="inline">
