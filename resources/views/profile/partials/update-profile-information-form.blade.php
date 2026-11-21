@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-muted">
-            Modifiez votre nom et votre adresse e-mail.
+            Modifiez votre nom, votre prénom et votre adresse e-mail.
         </p>
     </header>
 
@@ -17,10 +17,17 @@
         @csrf
         @method('patch')
 
-        <div class="field">
-            <x-input-label for="name" :value="'Nom affiché'" />
-            <x-text-input id="name" name="name" type="text" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" />
+        <div class="grid gap-x-4 sm:grid-cols-2">
+            <div class="field">
+                <x-input-label for="nom" value="Nom" />
+                <x-text-input id="nom" name="nom" type="text" :value="old('nom', $user->nom)" required autofocus autocomplete="family-name" />
+                <x-input-error :messages="$errors->get('nom')" />
+            </div>
+            <div class="field">
+                <x-input-label for="prenom" value="Prénom" />
+                <x-text-input id="prenom" name="prenom" type="text" :value="old('prenom', $user->prenom)" required autocomplete="given-name" />
+                <x-input-error :messages="$errors->get('prenom')" />
+            </div>
         </div>
 
         <div class="field">
