@@ -1,40 +1,51 @@
 @extends('layouts.app')
 
+@section('header')
+    <div>
+        <a href="{{ route('stagiaire.demandes.index') }}" class="mb-2 inline-flex items-center gap-1 text-sm link"><x-icon name="arrow-left" class="h-4 w-4" /> Mes demandes</a>
+        <h1 class="page-title">Nouvelle demande de stage</h1>
+        <p class="page-sub">Choisissez le service visé et joignez les documents demandés.</p>
+    </div>
+@endsection
+
 @section('content')
-<div class="max-w-3xl mx-auto bg-white p-6 shadow rounded">
-    <h2 class="text-xl font-bold mb-4">Nouvelle demande de stage</h2>
+<form method="POST" action="{{ route('stagiaire.demandes.store') }}" enctype="multipart/form-data" class="max-w-3xl space-y-6">
+    @csrf
 
-    <form method="POST" action="{{ route('stagiaire.demandes.store') }}" enctype="multipart/form-data">
-        @csrf
-
-        <div class="mb-4">
-            <label for="service_id" class="block font-medium">Service</label>
-            <select name="service_id" id="service_id" class="border rounded px-3 py-2 w-full" required>
-                <option value="">-- Choisir un service --</option>
+    <section class="panel panel-body">
+        <h2 class="panel-title">Service</h2>
+        <div class="mt-4">
+            <label for="service_id" class="label">Service souhaité</label>
+            <select name="service_id" id="service_id" class="input" required>
+                <option value="">Choisir un service</option>
                 @foreach($services as $service)
-                    <option value="{{ $service->id }}">{{ $service->nom_service }}</option>
+                    <option value="{{ $service->id }}" @selected(old('service_id') == $service->id)>{{ $service->nom_service }}</option>
                 @endforeach
             </select>
         </div>
+    </section>
 
-        <div class="mb-4">
-            <h3 class="font-semibold">Documents à fournir</h3>
+    <section class="panel panel-body">
+        <h2 class="panel-title">Documents à fournir</h2>
+        <p class="mt-1 text-sm text-muted">Les pièces marquées d'un astérisque sont obligatoires.</p>
+        <div class="mt-5 divide-y divide-line">
             @foreach($typesDocuments as $type)
-                <div class="mt-2">
-                    <label class="block text-sm font-medium">
+                <div class="grid gap-2 py-4 sm:grid-cols-[14rem_1fr] sm:items-center">
+                    <label for="doc-{{ $type->id }}" class="text-sm font-medium">
                         {{ $type->libelle }}
-                        @if($type->obligatoire) <span class="text-red-500">*</span> @endif
+                        @if($type->obligatoire) <span class="text-red-700" aria-label="obligatoire">*</span> @endif
+                        <span class="block text-xs font-normal text-muted">{{ $type->type_fichier === 'image' ? 'Image' : 'PDF ou image' }}</span>
                     </label>
-                    <input type="file" name="documents[{{ $type->id }}]"
-                        class="border rounded px-3 py-2 w-full"
+                    <input type="file" id="doc-{{ $type->id }}" name="documents[{{ $type->id }}]" class="input-file"
                         accept="{{ $type->type_fichier === 'image' ? 'image/*' : '.pdf,.jpg,.jpeg,.png' }}">
                 </div>
             @endforeach
         </div>
+    </section>
 
-        <button type="submit" class="bg-blue-600 text-gray-100 px-4 py-2 rounded">
-            Soumettre la demande
-        </button>
-    </form>
-</div>
+    <div class="flex items-center gap-3">
+        <button type="submit" class="btn-primary">Soumettre la demande</button>
+        <a href="{{ route('stagiaire.demandes.index') }}" class="btn-secondary">Annuler</a>
+    </div>
+</form>
 @endsection

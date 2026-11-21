@@ -1,91 +1,69 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <h1 class="text-2xl font-semibold tracking-tight">Créer un compte stagiaire</h1>
+    <p class="mt-1 text-sm text-muted">Ces informations accompagneront vos demandes de stage.</p>
+
+    <form method="POST" action="{{ route('register') }}" class="mt-8">
         @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="nom" :value="__('Nom')" />
-            <x-text-input id="nom" class="block mt-1 w-full" type="text" name="nom" :value="old('name')" required autofocus autocomplete="family-name" />
-            <x-input-error :messages="$errors->get('nom')" class="mt-2" />
+        <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+            <div class="field">
+                <x-input-label for="nom" value="Nom" />
+                <x-text-input id="nom" type="text" name="nom" :value="old('nom')" required autofocus autocomplete="family-name" />
+                <x-input-error :messages="$errors->get('nom')" />
+            </div>
+            <div class="field">
+                <x-input-label for="prenom" value="Prénom" />
+                <x-text-input id="prenom" type="text" name="prenom" :value="old('prenom')" required autocomplete="given-name" />
+                <x-input-error :messages="$errors->get('prenom')" />
+            </div>
         </div>
 
-        <!-- Prénom -->
-        <div class="mt-4">
-            <x-input-label for="prenom" :value="__('Prénom')" />
-            <x-text-input id="prenom" class="block mt-1 w-full" type="text" name="prenom" :value="old('prenom')" required autocomplete="given-name" />
-            <x-input-error :messages="$errors->get('prenom')" class="mt-2" />
+        <div class="field">
+            <x-input-label for="formation" value="Formation" />
+            <x-text-input id="formation" type="text" name="formation" :value="old('formation')" placeholder="Ex. : 1re année du cycle ingénieur en informatique" required />
+            <x-input-error :messages="$errors->get('formation')" />
         </div>
 
-        <!-- Formation -->
-        <div class="mt-4">
-            <x-input-label for="formation" :value="__('Formation')" />
-            <x-text-input id="formation" class="block mt-1 w-full" type="text" name="formation"
-                :value="old('formation')" placeholder="ex: 1ère année d'ingénierie informatique" required />
-            <x-input-error :messages="$errors->get('formation')" class="mt-2" />
+        <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+            <div class="field">
+                <x-input-label for="niveau_etude" value="Niveau d'études" />
+                <x-text-input id="niveau_etude" type="text" name="niveau_etude" :value="old('niveau_etude')" placeholder="Ex. : Bac+3" required />
+                <x-input-error :messages="$errors->get('niveau_etude')" />
+            </div>
+            <div class="field">
+                <x-input-label for="telephone" value="Téléphone" />
+                <x-text-input id="telephone" type="text" name="telephone" :value="old('telephone')" placeholder="06 00 00 00 00" required />
+                <x-input-error :messages="$errors->get('telephone')" />
+            </div>
         </div>
 
-        <!-- Niveau d'études -->
-        <div class="mt-4">
-            <x-input-label for="niveau_etude" :value="__('Niveau d\'études')" />
-            <x-text-input id="niveau_etude" class="block mt-1 w-full" type="text" name="niveau_etude"
-                :value="old('niveau_etude')" placeholder="ex: Bac +3" required />
-            <x-input-error :messages="$errors->get('niveau_etude')" class="mt-2" />
+        <div class="field">
+            <x-input-label for="adresse" value="Adresse" />
+            <x-text-input id="adresse" type="text" name="adresse" :value="old('adresse')" required />
+            <x-input-error :messages="$errors->get('adresse')" />
         </div>
 
-        <!-- Téléphone -->
-        <div class="mt-4">
-            <x-input-label for="telephone" :value="__('Téléphone')" />
-            <x-text-input id="telephone" class="block mt-1 w-full" type="text" name="telephone"
-                :value="old('telephone')" placeholder="ex: 06 00 00 00 00" required />
-            <x-input-error :messages="$errors->get('telephone')" class="mt-2" />
+        <div class="field">
+            <x-input-label for="email" value="Adresse e-mail" />
+            <x-text-input id="email" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" />
         </div>
 
-        <!-- Adresse -->
-        <div class="mt-4">
-            <x-input-label for="adresse" :value="__('Adresse')" />
-            <x-text-input id="adresse" class="block mt-1 w-full" type="text" name="adresse"
-                :value="old('adresse')" placeholder="ex: 12 rue de la paix" required />
-            <x-input-error :messages="$errors->get('adresse')" class="mt-2" />
+        <div class="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+            <div class="field">
+                <x-input-label for="password" value="Mot de passe" />
+                <x-text-input id="password" type="password" name="password" required autocomplete="new-password" />
+                <x-input-error :messages="$errors->get('password')" />
+            </div>
+            <div class="field">
+                <x-input-label for="password_confirmation" value="Confirmation" />
+                <x-text-input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" />
+                <x-input-error :messages="$errors->get('password_confirmation')" />
+            </div>
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
+        <x-primary-button class="w-full">Créer mon compte</x-primary-button>
     </form>
+
+    <p class="mt-8 text-sm text-muted">Déjà inscrit ? <a href="{{ route('login') }}" class="link">Se connecter</a></p>
 </x-guest-layout>

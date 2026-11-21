@@ -1,76 +1,91 @@
 @extends('layouts.app')
 
+@section('header')
+    <div>
+        <a href="{{ route('stagiaire.demandes.index') }}" class="mb-2 inline-flex items-center gap-1 text-sm link"><x-icon name="arrow-left" class="h-4 w-4" /> Mes demandes</a>
+        <div class="flex flex-wrap items-center gap-3">
+            <h1 class="page-title">Demande #{{ $demande->id }}</h1>
+            <x-status :value="$demande->statut" />
+        </div>
+        <p class="page-sub">Déposée le {{ $demande->created_at->format('d/m/Y') }} auprès du service {{ $demande->service->nom_service }}</p>
+    </div>
+@endsection
+
 @section('content')
-    <h2 class="text-xl font-bold mb-4">Détails de la demande #{{ $demande->id }}</h2>
-
-    <div class="bg-white shadow rounded p-4">
-        <p><strong>Service :</strong> {{ $demande->service->nom_service }}</p>
-        <p><strong>Statut :</strong> {{ ucfirst($demande->statut) }}</p>
-        <p><strong>Date :</strong> {{ $demande->created_at->format('d/m/Y') }}</p>
-    </div>
-
-    <h3 class="text-lg font-semibold mt-4">Responsable du service</h3>
-    <div class="bg-white shadow rounded p-4 mt-2">
-        @if($demande->service && $demande->service->responsable)
-            <p><strong>Nom :</strong> {{ $demande->service->responsable->nom }} {{ $demande->service->responsable->prenom }}</p>
-            <p><strong>Email :</strong> {{ $demande->service->responsable->email }}</p>
-            <p><strong>Spécialité :</strong> {{ $demande->service->responsable->specialite }}</p>
-        @else
-            <p>Aucun responsable attribué.</p>
-        @endif
-    </div>
-
-    <h3 class="mt-6 font-semibold">Documents liés</h3>
-    <div class="bg-white shadow rounded p-4 mt-2">
-        @if($demande->documents->isEmpty())
-            <p>Aucun document pour cette demande.</p>
-        @else
-            <ul class="list-disc pl-6">
-                @foreach($demande->documents as $doc)
-                    <li>
-                        {{ $doc->typeDocument->libelle }} 
-                        (<em>{{ $doc->typeDocument->type_fichier }}</em>) - 
-                        <span class="text-gray-600">{{ ucfirst($doc->statut) }}</span>
-                        @if($doc->chemin_fichier)
-                            <a href="{{ asset('storage/' . $doc->chemin_fichier) }}" 
-                               target="_blank" 
-                               class="text-blue-600 hover:underline ml-2">
-                               Voir
-                            </a>
-                        @endif
-                    </li>
-                @endforeach
-            </ul>
-        @endif
-    </div>
-
-    <h3 class="text-lg font-semibold mt-4">Encadrant</h3>
-    <div class="bg-white shadow rounded p-4 mt-2">
-        @if($demande->encadrant)
-            <p><strong>Nom :</strong> {{ $demande->encadrant->nom }} {{ $demande->encadrant->prenom }}</p>
-            <p><strong>Email :</strong> {{ $demande->encadrant->email }}</p>
-            <p><strong>Spécialité :</strong> {{ $demande->encadrant->specialite }}</p>
-        @else
-            <p>Aucun encadrant assigné.</p>
-        @endif
-    </div>
-
-    <h3 class="text-lg font-semibold mt-4">Entreprise</h3>
-    <div class="bg-white shadow rounded p-4 mt-2">
-        @if($demande->entreprise)
-            <p><strong>Nom :</strong> {{ $demande->entreprise->nom }}</p>
-            <p><strong>Adresse :</strong> {{ $demande->entreprise->adresse }}</p>
-            <p><strong>Email :</strong> {{ $demande->entreprise->email }}</p>
-            <p><strong>Téléphone :</strong> {{ $demande->entreprise->telephone }}</p>
-        @else
-            <p>Aucune entreprise assignée.</p>
-        @endif
-    </div>
-
     @if($demande->statut === 'refusée')
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mt-4">
-        <strong>Motif du refus :</strong> {{ $demande->motif_refus ?? 'Non spécifié' }}
-    </div>
+        <div class="alert-error">
+            <p class="font-medium">Motif du refus</p>
+            <p class="mt-1">{{ $demande->motif_refus ?? 'Non spécifié' }}</p>
+        </div>
     @endif
 
+    <div class="grid gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+        <div class="space-y-6">
+            <section class="panel panel-body">
+                <h2 class="section-title">Responsable du service</h2>
+                @if($demande->service && $demande->service->responsable)
+                    <dl class="dl">
+                        <dt>Nom</dt><dd>{{ $demande->service->responsable->nom }} {{ $demande->service->responsable->prenom }}</dd>
+                        <dt>E-mail</dt><dd>{{ $demande->service->responsable->email }}</dd>
+                        <dt>Spécialité</dt><dd>{{ $demande->service->responsable->specialite ?? '—' }}</dd>
+                    </dl>
+                @else
+                    <p class="text-sm text-muted">Aucun responsable n'est encore rattaché à ce service.</p>
+                @endif
+            </section>
+
+            <section class="panel panel-body">
+                <h2 class="section-title">Encadrant</h2>
+                @if($demande->encadrant)
+                    <dl class="dl">
+                        <dt>Nom</dt><dd>{{ $demande->encadrant->nom }} {{ $demande->encadrant->prenom }}</dd>
+                        <dt>E-mail</dt><dd>{{ $demande->encadrant->email }}</dd>
+                        <dt>Spécialité</dt><dd>{{ $demande->encadrant->specialite }}</dd>
+                    </dl>
+                @else
+                    <p class="text-sm text-muted">L'encadrant vous sera affecté quand la demande sera acceptée.</p>
+                @endif
+            </section>
+
+            <section class="panel panel-body">
+                <h2 class="section-title">Structure d'accueil</h2>
+                @if($demande->entreprise)
+                    <dl class="dl">
+                        <dt>Nom</dt><dd>{{ $demande->entreprise->nom }}</dd>
+                        <dt>Adresse</dt><dd>{{ $demande->entreprise->adresse }}</dd>
+                        <dt>E-mail</dt><dd>{{ $demande->entreprise->email }}</dd>
+                        <dt>Téléphone</dt><dd>{{ $demande->entreprise->telephone }}</dd>
+                    </dl>
+                @else
+                    <p class="text-sm text-muted">Aucune structure d'accueil renseignée pour le moment.</p>
+                @endif
+            </section>
+        </div>
+
+        <section class="panel self-start">
+            <div class="border-b border-line px-6 py-4">
+                <h2 class="panel-title">Documents</h2>
+            </div>
+            @if($demande->documents->isEmpty())
+                <p class="empty">Aucun document pour cette demande.</p>
+            @else
+                <ul class="divide-y divide-line">
+                    @foreach($demande->documents as $doc)
+                        <li class="flex items-center justify-between gap-4 px-6 py-3 text-sm">
+                            <div>
+                                <p class="font-medium">{{ $doc->typeDocument->libelle }}</p>
+                                <p class="text-xs text-muted">{{ strtoupper($doc->typeDocument->type_fichier) }}</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <x-status :value="$doc->statut" />
+                                @if($doc->chemin_fichier)
+                                    <a href="{{ asset('storage/' . $doc->chemin_fichier) }}" target="_blank" class="link">Ouvrir</a>
+                                @endif
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
+        </section>
+    </div>
 @endsection

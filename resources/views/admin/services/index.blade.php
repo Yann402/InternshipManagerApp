@@ -1,53 +1,48 @@
 @extends('layouts.admin')
 
-@section('title', 'Services')
+@section('header')
+    <div>
+        <h1 class="page-title">Services</h1>
+        <p class="page-sub">Les stagiaires déposent leurs demandes auprès de ces services.</p>
+    </div>
+    <a href="{{ route('admin.services.create') }}" class="btn-primary"><x-icon name="plus" class="h-4 w-4" /> Nouveau service</a>
+@endsection
 
 @section('content')
-<div class="max-w-6xl mx-auto p-6">
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">Services</h2>
-        <a href="{{ route('admin.services.create') }}" class="px-4 py-2 bg-blue-600 text-green-600 mr-4 rounded">+ Nouveau service</a>
-    </div>
-
-    @if(session('ok'))
-        <div class="mb-4 text-green-700">{{ session('ok') }}</div>
-    @endif
-
-    <div class="bg-white rounded shadow overflow-hidden">
-        <table class="min-w-full">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-3 text-left">#</th>
-                    <th class="px-4 py-3 text-left">Service</th>
-                    <th class="px-4 py-3 text-left">Division</th>
-                    <th class="px-4 py-3 text-left">Responsable</th>
-                    <th class="px-4 py-3"></th>
-                </tr>
+<div class="panel">
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr><th>Service</th><th>Division</th><th>Responsable</th><th class="text-right">Actions</th></tr>
             </thead>
-            <tbody class="divide-y">
+            <tbody>
                 @forelse($services as $s)
                 <tr>
-                    <td class="px-4 py-3">{{ $s->id }}</td>
-                    <td class="px-4 py-3">{{ $s->nom_service }}</td>
-                    <td class="px-4 py-3">{{ $s->division?->nom_division ?? '-' }}</td>
-                    <td class="px-4 py-3">{{ $s->responsable?->nom.' '.$s->responsable?->prenom ?? '-' }}</td>
-                    <td class="px-4 py-3 text-right">
-                        <a href="{{ route('admin.services.edit', $s->id) }}" class="text-blue-600 mr-4">Éditer</a>
-                        <form action="{{ route('admin.services.destroy', $s->id) }}" method="POST" class="inline">
-                            @csrf @method('DELETE')
-                            <button type="submit" onclick="return confirm('Supprimer ?')" class="text-red-600">Supprimer</button>
-                        </form>
+                    <td class="font-medium">{{ $s->nom_service }}</td>
+                    <td>{{ $s->division?->nom_division ?? '—' }}</td>
+                    <td>
+                        @if($s->responsable)
+                            {{ $s->responsable->prenom }} {{ $s->responsable->nom }}
+                        @else
+                            <span class="status-wait">À désigner</span>
+                        @endif
+                    </td>
+                    <td class="text-right">
+                        <div class="inline-flex items-center gap-4">
+                            <a href="{{ route('admin.services.edit', $s->id) }}" class="link">Modifier</a>
+                            <form action="{{ route('admin.services.destroy', $s->id) }}" method="POST" class="inline">
+                                @csrf @method('DELETE')
+                                <button type="submit" onclick="return confirm('Supprimer ce service ?')" class="link-danger">Supprimer</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty
-                <tr><td class="px-4 py-6" colspan="5">Aucun service.</td></tr>
+                <tr><td colspan="4" class="empty">Aucun service pour le moment.</td></tr>
                 @endforelse
             </tbody>
         </table>
     </div>
-
-    <div class="mt-4">
-        {{ $services->links() }}
-    </div>
 </div>
+<div class="mt-4">{{ $services->links() }}</div>
 @endsection

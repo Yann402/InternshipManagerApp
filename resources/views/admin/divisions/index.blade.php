@@ -1,47 +1,40 @@
 @extends('layouts.admin')
 
-@section('title', 'Divisions')
+@section('header')
+    <div>
+        <h1 class="page-title">Divisions</h1>
+        <p class="page-sub">Chaque division regroupe plusieurs services.</p>
+    </div>
+    <a href="{{ route('admin.divisions.create') }}" class="btn-primary"><x-icon name="plus" class="h-4 w-4" /> Nouvelle division</a>
+@endsection
 
 @section('content')
-<div class="max-w-6xl mx-auto p-6">
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">Divisions</h2>
-        <a href="{{ route('admin.divisions.create') }}" class="px-4 py-2 bg-blue-600 text-green-600 mr-4 rounded">+ Nouvelle division</a>
-    </div>
-
-    @if(session('ok'))
-        <div class="mb-4 text-green-700">{{ session('ok') }}</div>
-    @endif
-
-    <div class="bg-white rounded shadow overflow-hidden">
-        <table class="min-w-full">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-3 text-left">#</th>
-                    <th class="px-4 py-3 text-left">Nom</th>
-                    <th class="px-4 py-3 text-left"># Services</th>
-                    <th class="px-4 py-3"></th>
-                </tr>
+<div class="panel">
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr><th>Division</th><th>Services</th><th class="text-right">Actions</th></tr>
             </thead>
-            <tbody class="divide-y">
+            <tbody>
                 @forelse($divisions as $d)
                 <tr>
-                    <td class="px-4 py-3">{{ $d->id }}</td>
-                    <td class="px-4 py-3">{{ $d->nom_division }}</td>
-                    <td class="px-4 py-3">
-                        {{ $d->services_count ?? $d->services->count() }}
-                        <a href="{{ route('admin.services.create', ['division_id' => $d->id]) }}" class="text-green-600 mr-4">Ajouter</a>
+                    <td class="font-medium">{{ $d->nom_division }}</td>
+                    <td>
+                        <span class="tabular-nums">{{ $d->services_count ?? $d->services->count() }}</span>
+                        <a href="{{ route('admin.services.create', ['division_id' => $d->id]) }}" class="link ml-3">Ajouter un service</a>
                     </td>
-                    <td class="px-4 py-3 text-right">
-                        <a href="{{ route('admin.divisions.edit', $d->id) }}" class="text-blue-600 mr-4">Éditer</a>
-                        <form action="{{ route('admin.divisions.destroy', $d->id) }}" method="POST" class="inline">
-                            @csrf @method('DELETE')
-                            <button type="submit" onclick="return confirm('Supprimer ?')" class="text-red-600">Supprimer</button>
-                        </form>
+                    <td class="text-right">
+                        <div class="inline-flex items-center gap-4">
+                            <a href="{{ route('admin.divisions.edit', $d->id) }}" class="link">Modifier</a>
+                            <form action="{{ route('admin.divisions.destroy', $d->id) }}" method="POST" class="inline">
+                                @csrf @method('DELETE')
+                                <button type="submit" onclick="return confirm('Supprimer cette division ?')" class="link-danger">Supprimer</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty
-                <tr><td class="px-4 py-6" colspan="4">Aucune division.</td></tr>
+                <tr><td colspan="3" class="empty">Aucune division pour le moment.</td></tr>
                 @endforelse
             </tbody>
         </table>

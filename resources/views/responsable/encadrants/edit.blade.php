@@ -1,32 +1,19 @@
 @extends('layouts.responsable')
 
-@section('content')
-<div class="bg-white shadow rounded-lg p-6">
-    <h2 class="text-lg font-semibold mb-4">✏️ Modifier l'encadrant</h2>
+@section('header')
+    <div>
+        <a href="{{ route('responsable.encadrants.index') }}" class="mb-2 inline-flex items-center gap-1 text-sm link"><x-icon name="arrow-left" class="h-4 w-4" /> Encadrants</a>
+        <h1 class="page-title">Modifier : {{ $encadrant->prenom }} {{ $encadrant->nom }}</h1>
+    </div>
+@endsection
 
-    <form action="{{ route('responsable.encadrants.update', $encadrant->id) }}" method="POST">
-        @csrf @method('PUT')
-        <div class="mb-4">
-            <label class="block">Nom</label>
-            <input type="text" name="nom" value="{{ $encadrant->nom }}" class="border rounded px-3 py-2 w-full" required>
-        </div>
-        <div class="mb-4">
-            <label class="block">Prénom</label>
-            <input type="text" name="prenom" value="{{ $encadrant->prenom }}" class="border rounded px-3 py-2 w-full" required>
-        </div>
-        <div class="mb-4">
-            <label class="block">Email</label>
-            <input type="email" name="email" value="{{ $encadrant->email }}" class="border rounded px-3 py-2 w-full">
-        </div>
-        <div class="mb-4">
-            <label class="block">Téléphone</label>
-            <input type="text" name="telephone" value="{{ $encadrant->telephone }}" class="border rounded px-3 py-2 w-full">
-        </div>
-        <div class="mb-4">
-            <label class="block">Spécialité</label>
-            <input type="text" name="specialite" value="{{ $encadrant->specialite }}" class="border rounded px-3 py-2 w-full">
-        </div>
-        <button class="bg-green-500 text-gray-100 px-4 py-2 rounded hover:bg-green-600">Mettre à jour</button>
-    </form>
-</div>
+@section('content')
+<form action="{{ route('responsable.encadrants.update', $encadrant->id) }}" method="POST" class="panel panel-body max-w-2xl">
+    @csrf @method('PUT')
+    @include('responsable.encadrants._form', ['encadrant' => $encadrant])
+    <div class="flex items-center gap-3">
+        <button class="btn-primary">Enregistrer les modifications</button>
+        <a href="{{ route('responsable.encadrants.index') }}" class="btn-secondary">Annuler</a>
+    </div>
+</form>
 @endsection

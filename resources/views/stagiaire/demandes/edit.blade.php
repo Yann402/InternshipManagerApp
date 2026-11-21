@@ -1,23 +1,29 @@
 @extends('layouts.app')
 
-@section('content')
-    <h2 class="text-xl font-bold mb-4">Modifier ma demande</h2>
+@section('header')
+    <div>
+        <a href="{{ route('stagiaire.demandes.index') }}" class="mb-2 inline-flex items-center gap-1 text-sm link"><x-icon name="arrow-left" class="h-4 w-4" /> Mes demandes</a>
+        <h1 class="page-title">Modifier la demande #{{ $demande->id }}</h1>
+    </div>
+@endsection
 
-    <form action="{{ route('stagiaire.demandes.update', $demande) }}" method="POST">
+@section('content')
+    <form action="{{ route('stagiaire.demandes.update', $demande) }}" method="POST" class="panel panel-body max-w-xl">
         @csrf
         @method('PUT')
 
-        <div class="mb-4">
-            <label class="block font-medium">Service</label>
-            <select name="service_id" class="w-full border rounded p-2" required>
+        <div class="field">
+            <label for="service_id" class="label">Service souhaité</label>
+            <select id="service_id" name="service_id" class="input" required>
                 @foreach($services as $s)
-                    <option value="{{ $s->id }}" @if($demande->service_id == $s->id) selected @endif>
-                        {{ $s->nom_service }}
-                    </option>
+                    <option value="{{ $s->id }}" @if($demande->service_id == $s->id) selected @endif>{{ $s->nom_service }}</option>
                 @endforeach
             </select>
         </div>
 
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Mettre à jour</button>
+        <div class="flex items-center gap-3">
+            <button type="submit" class="btn-primary">Enregistrer les modifications</button>
+            <a href="{{ route('stagiaire.demandes.index') }}" class="btn-secondary">Annuler</a>
+        </div>
     </form>
 @endsection

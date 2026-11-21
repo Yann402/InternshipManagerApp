@@ -1,38 +1,43 @@
 @extends('layouts.admin')
 
+@section('header')
+    <div>
+        <a href="{{ route('admin.stagiaires.index') }}" class="mb-2 inline-flex items-center gap-1 text-sm link"><x-icon name="arrow-left" class="h-4 w-4" /> Stagiaires</a>
+        <h1 class="page-title">Modifier : {{ $stagiaire->prenom }} {{ $stagiaire->nom }}</h1>
+    </div>
+@endsection
+
 @section('content')
-<div class="bg-white shadow rounded-lg p-6 max-w-lg mx-auto">
-    <h2 class="text-xl font-semibold mb-4">✏️ Modifier le stagiaire</h2>
-
-    <form action="{{ route('admin.stagiaires.update', $stagiaire->id) }}" method="POST">
-        @csrf @method('PUT')
-
-        <div class="mb-4">
-            <label class="block text-gray-700">Nom</label>
-            <input type="text" name="nom" value="{{ old('nom', $stagiaire->nom) }}" class="w-full border p-2 rounded">
-            @error('nom') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+<form action="{{ route('admin.stagiaires.update', $stagiaire->id) }}" method="POST" class="panel panel-body max-w-2xl">
+    @csrf @method('PUT')
+    <div class="grid gap-x-4 sm:grid-cols-2">
+        <div class="field">
+            <label for="nom" class="label">Nom</label>
+            <input id="nom" type="text" name="nom" value="{{ old('nom', $stagiaire->nom) }}" class="input">
+            @error('nom') <p class="error">{{ $message }}</p> @enderror
         </div>
-
-        <div class="mb-4">
-            <label class="block text-gray-700">Prénom</label>
-            <input type="text" name="prenom" value="{{ old('prenom', $stagiaire->prenom) }}" class="w-full border p-2 rounded">
-            @error('prenom') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+        <div class="field">
+            <label for="prenom" class="label">Prénom</label>
+            <input id="prenom" type="text" name="prenom" value="{{ old('prenom', $stagiaire->prenom) }}" class="input">
+            @error('prenom') <p class="error">{{ $message }}</p> @enderror
         </div>
-
-        <div class="mb-4">
-            <label class="block text-gray-700">Email</label>
-            <input type="email" name="email" value="{{ old('email', $stagiaire->email) }}" class="w-full border p-2 rounded">
-            @error('email') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+        <div class="field sm:col-span-2">
+            <label for="email" class="label">Adresse e-mail</label>
+            <input id="email" type="email" name="email" value="{{ old('email', $stagiaire->email) }}" class="input">
+            @error('email') <p class="error">{{ $message }}</p> @enderror
         </div>
-
-        <div class="mb-4">
-            <label class="block text-gray-700">Nouveau mot de passe (facultatif)</label>
-            <input type="password" name="password" class="w-full border p-2 rounded">
-            <input type="password" name="password_confirmation" placeholder="Confirmer" class="w-full border p-2 rounded mt-2">
+        <div class="field">
+            <label for="password" class="label">Nouveau mot de passe <span class="font-normal text-muted">(facultatif)</span></label>
+            <input id="password" type="password" name="password" class="input">
         </div>
-
-        <button type="submit" class="bg-blue-500 text-gray-100 px-4 py-2 rounded">💾 Mettre à jour</button>
-        <a href="{{ route('admin.stagiaires.index') }}" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded">⬅ Retour</a>
-    </form>
-</div>
+        <div class="field">
+            <label for="password_confirmation" class="label">Confirmation</label>
+            <input id="password_confirmation" type="password" name="password_confirmation" class="input">
+        </div>
+    </div>
+    <div class="flex items-center gap-3">
+        <button type="submit" class="btn-primary">Enregistrer les modifications</button>
+        <a href="{{ route('admin.stagiaires.index') }}" class="btn-secondary">Annuler</a>
+    </div>
+</form>
 @endsection

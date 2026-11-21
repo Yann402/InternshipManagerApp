@@ -1,49 +1,44 @@
 @extends('layouts.admin')
 
-@section('title', 'Responsables')
+@section('header')
+    <div>
+        <h1 class="page-title">Responsables</h1>
+        <p class="page-sub">Ils examinent les demandes adressées à leur service.</p>
+    </div>
+    <a href="{{ route('admin.responsables.create') }}" class="btn-primary"><x-icon name="plus" class="h-4 w-4" /> Ajouter un responsable</a>
+@endsection
 
 @section('content')
-<div class="flex justify-between mb-4">
-    <h2 class="text-xl font-semibold">Liste des responsables</h2>
-    <a href="{{ route('admin.responsables.create') }}" class="px-4 py-2 bg-green-600 text-green-600 mr-4 rounded">+ Ajouter</a>
+<div class="panel">
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr><th>Nom</th><th>E-mail</th><th>Poste</th><th>Spécialité</th><th>Service</th><th class="text-right">Actions</th></tr>
+            </thead>
+            <tbody>
+                @forelse($responsables as $r)
+                <tr>
+                    <td class="font-medium">{{ $r->prenom }} {{ $r->nom }}</td>
+                    <td>{{ $r->email }}</td>
+                    <td>{{ $r->poste ?? '—' }}</td>
+                    <td>{{ $r->specialite ?? '—' }}</td>
+                    <td>{{ optional($r->service)->nom_service ?? '—' }}</td>
+                    <td class="text-right">
+                        <div class="inline-flex items-center gap-4">
+                            <a href="{{ route('admin.responsables.edit', $r) }}" class="link">Modifier</a>
+                            <form action="{{ route('admin.responsables.destroy', $r) }}" method="POST" class="inline">
+                                @csrf @method('DELETE')
+                                <button onclick="return confirm('Supprimer ce responsable ?')" class="link-danger">Supprimer</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr><td colspan="6" class="empty">Aucun responsable pour le moment.</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
-
-<table class="w-full bg-white rounded shadow">
-    <thead>
-        <tr class="bg-gray-200">
-            <th class="p-2 text-left">Nom</th>
-            <th class="p-2 text-left">Prénom</th>
-            <th class="p-2 text-left">Email</th>
-            <th class="p-2 text-left">Poste</th>
-            <th class="p-2 text-left">Spécialité</th>
-            <th class="p-2 text-left">Service</th>
-            <th class="p-2">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($responsables as $r)
-        <tr class="border-t">
-            <td class="p-2">{{ $r->nom }}</td>
-            <td class="p-2">{{ $r->prenom }}</td>
-            <td class="p-2">{{ $r->email }}</td>
-            <td class="p-2">{{ $r->poste ?? '—' }}</td>
-            <td class="p-2">{{ $r->specialite ?? '—' }}</td>
-            <td class="p-2">
-                {{ optional($r->service)->nom_service ?? '— Aucun —' }}
-            </td>
-            <td class="p-2 space-x-2">
-                <a href="{{ route('admin.responsables.edit', $r) }}" class="text-blue-600">Éditer</a>
-                <form action="{{ route('admin.responsables.destroy', $r) }}" method="POST" class="inline">
-                    @csrf @method('DELETE')
-                    <button onclick="return confirm('Supprimer ?')" class="text-red-600">Supprimer</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-
-<div class="mt-4">
-    {{ $responsables->links() }}
-</div>
+<div class="mt-4">{{ $responsables->links() }}</div>
 @endsection

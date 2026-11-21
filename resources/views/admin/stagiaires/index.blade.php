@@ -1,49 +1,43 @@
 @extends('layouts.admin')
 
+@section('header')
+    <div>
+        <h1 class="page-title">Stagiaires</h1>
+        <p class="page-sub">Comptes stagiaires inscrits ou créés par l'administration.</p>
+    </div>
+    <a href="{{ route('admin.stagiaires.create') }}" class="btn-primary"><x-icon name="plus" class="h-4 w-4" /> Ajouter un stagiaire</a>
+@endsection
+
 @section('content')
-<div class="bg-white shadow rounded-lg p-6">
-    <h2 class="text-xl font-semibold mb-4">👨‍🎓 Liste des stagiaires</h2>
-
-    <a href="{{ route('admin.stagiaires.create') }}" class="bg-indigo-500 text-green-600 px-4 py-2 rounded mb-4 inline-block">➕ Ajouter un stagiaire</a>
-
-    @if(session('success'))
-        <div class="bg-green-100 text-green-700 p-3 rounded mb-4">{{ session('success') }}</div>
-    @endif
-
-    <table class="min-w-full bg-white border rounded-lg">
-        <thead class="bg-gray-100 text-gray-600 uppercase text-sm">
-            <tr>
-                <th class="py-3 px-6">Nom</th>
-                <th class="py-3 px-6">Prénom</th>
-                <th class="py-3 px-6">Email</th>
-                <th class="py-3 px-6">Service</th>
-                <th class="py-3 px-6 text-center">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($stagiaires as $stagiaire)
-                <tr class="border-b hover:bg-gray-50">
-                    <td class="py-3 px-6">{{ $stagiaire->nom }}</td>
-                    <td class="py-3 px-6">{{ $stagiaire->prenom }}</td>
-                    <td class="py-3 px-6">{{ $stagiaire->email }}</td>
-                    <td class="py-3 px-6">
-                        <a href="{{ route('admin.stagiaires.show', $stagiaire->id) }}" 
-                        class="bg-indigo-500 text-indigo-600 px-3 py-1 rounded">
-                        Voir
-                        </a>
-                    </td>
-                    <td class="py-3 px-6 text-center space-x-2">
-                        <a href="{{ route('admin.stagiaires.edit', $stagiaire->id) }}" class="bg-blue-500 text-green-600 px-3 py-1 rounded">✏️ Modifier</a>
-                        <form action="{{ route('admin.stagiaires.destroy', $stagiaire->id) }}" method="POST" class="inline">
-                            @csrf @method('DELETE')
-                            <button onclick="return confirm('Supprimer ce stagiaire ?')" class="bg-red-500 text-red-600 px-3 py-1 rounded">🗑 Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr><td colspan="4" class="text-center py-3">Aucun stagiaire trouvé</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+<div class="panel">
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr><th>Nom</th><th>E-mail</th><th class="text-right">Actions</th></tr>
+            </thead>
+            <tbody>
+                @forelse($stagiaires as $stagiaire)
+                    <tr>
+                        <td class="font-medium">
+                            <a href="{{ route('admin.stagiaires.show', $stagiaire->id) }}" class="hover:text-pine-700 hover:underline">{{ $stagiaire->prenom }} {{ $stagiaire->nom }}</a>
+                        </td>
+                        <td>{{ $stagiaire->email }}</td>
+                        <td class="text-right">
+                            <div class="inline-flex items-center gap-4">
+                                <a href="{{ route('admin.stagiaires.show', $stagiaire->id) }}" class="link">Voir les demandes</a>
+                                <a href="{{ route('admin.stagiaires.edit', $stagiaire->id) }}" class="link">Modifier</a>
+                                <form action="{{ route('admin.stagiaires.destroy', $stagiaire->id) }}" method="POST" class="inline">
+                                    @csrf @method('DELETE')
+                                    <button onclick="return confirm('Supprimer ce stagiaire ?')" class="link-danger">Supprimer</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr><td colspan="3" class="empty">Aucun stagiaire inscrit.</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection

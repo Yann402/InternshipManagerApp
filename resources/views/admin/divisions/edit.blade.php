@@ -1,24 +1,24 @@
 @extends('layouts.admin')
 
-@section('title', 'Éditer division')
+@section('header')
+    <div>
+        <a href="{{ route('admin.divisions.index') }}" class="mb-2 inline-flex items-center gap-1 text-sm link"><x-icon name="arrow-left" class="h-4 w-4" /> Divisions</a>
+        <h1 class="page-title">Modifier la division</h1>
+    </div>
+@endsection
 
 @section('content')
-<div class="max-w-2xl mx-auto p-6 bg-white rounded shadow">
-    <h2 class="text-xl font-semibold mb-4">Modifier la division</h2>
-
-    <form action="{{ route('admin.divisions.update', $division) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <div class="mb-4">
-            <label class="block font-medium mb-1">Nom de la division</label>
-            <input type="text" name="nom_division" value="{{ old('nom_division', $division->nom_division) }}" class="w-full border rounded p-2" required>
-        </div>
-
-        <div class="mt-4">
-            <button class="ml-3 text-gray-600">Mettre à jour</button>
-            <a href="{{ route('admin.divisions.index') }}" class="ml-3 text-gray-600">Annuler</a>
-        </div>
-    </form>
-</div>
+<form action="{{ route('admin.divisions.update', $division) }}" method="POST" class="panel panel-body max-w-xl">
+    @csrf
+    @method('PUT')
+    <div class="field">
+        <label for="nom_division" class="label">Nom de la division</label>
+        <input id="nom_division" type="text" name="nom_division" value="{{ old('nom_division', $division->nom_division) }}" class="input" required>
+        @error('nom_division') <p class="error">{{ $message }}</p> @enderror
+    </div>
+    <div class="flex items-center gap-3">
+        <button class="btn-primary">Enregistrer les modifications</button>
+        <a href="{{ route('admin.divisions.index') }}" class="btn-secondary">Annuler</a>
+    </div>
+</form>
 @endsection

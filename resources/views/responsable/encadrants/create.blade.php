@@ -1,32 +1,19 @@
 @extends('layouts.responsable')
 
-@section('content')
-<div class="bg-white shadow rounded-lg p-6">
-    <h2 class="text-lg font-semibold mb-4">➕ Ajouter un encadrant</h2>
+@section('header')
+    <div>
+        <a href="{{ route('responsable.encadrants.index') }}" class="mb-2 inline-flex items-center gap-1 text-sm link"><x-icon name="arrow-left" class="h-4 w-4" /> Encadrants</a>
+        <h1 class="page-title">Ajouter un encadrant</h1>
+    </div>
+@endsection
 
-    <form action="{{ route('responsable.encadrants.store') }}" method="POST">
-        @csrf
-        <div class="mb-4">
-            <label class="block">Nom</label>
-            <input type="text" name="nom" class="border rounded px-3 py-2 w-full" required>
-        </div>
-        <div class="mb-4">
-            <label class="block">Prénom</label>
-            <input type="text" name="prenom" class="border rounded px-3 py-2 w-full" required>
-        </div>
-        <div class="mb-4">
-            <label class="block">Email</label>
-            <input type="email" name="email" class="border rounded px-3 py-2 w-full">
-        </div>
-        <div class="mb-4">
-            <label class="block">Téléphone</label>
-            <input type="text" name="telephone" class="border rounded px-3 py-2 w-full">
-        </div>
-        <div class="mb-4">
-            <label class="block">Spécialité</label>
-            <input type="text" name="specialite" class="border rounded px-3 py-2 w-full">
-        </div>
-        <button class="bg-blue-500 text-gray-100 px-4 py-2 rounded hover:bg-blue-600">Enregistrer</button>
-    </form>
-</div>
+@section('content')
+<form action="{{ route('responsable.encadrants.store') }}" method="POST" class="panel panel-body max-w-2xl">
+    @csrf
+    @include('responsable.encadrants._form')
+    <div class="flex items-center gap-3">
+        <button class="btn-primary">Enregistrer</button>
+        <a href="{{ route('responsable.encadrants.index') }}" class="btn-secondary">Annuler</a>
+    </div>
+</form>
 @endsection

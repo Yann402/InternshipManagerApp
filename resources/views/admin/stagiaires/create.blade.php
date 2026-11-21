@@ -1,67 +1,29 @@
 @extends('layouts.admin')
 
+@section('header')
+    <div>
+        <a href="{{ route('admin.stagiaires.index') }}" class="mb-2 inline-flex items-center gap-1 text-sm link"><x-icon name="arrow-left" class="h-4 w-4" /> Stagiaires</a>
+        <h1 class="page-title">Créer un compte stagiaire</h1>
+    </div>
+@endsection
+
 @section('content')
-<div class="bg-white p-6 rounded-lg shadow">
-    <h2 class="text-xl font-semibold mb-6">➕ Créer un compte stagiaire</h2>
-
-    <form method="POST" action="{{ route('admin.stagiaires.store') }}">
-        @csrf
-
-        <!-- Nom -->
-        <div class="mb-4">
-            <label for="nom" class="block font-medium">Nom</label>
-            <input id="nom" type="text" name="nom" class="w-full border rounded p-2" required>
-        </div>
-
-        <!-- Prénom -->
-        <div class="mb-4">
-            <label for="prenom" class="block font-medium">Prénom</label>
-            <input id="prenom" type="text" name="prenom" class="w-full border rounded p-2" required>
-        </div>
-
-        <!-- Formation -->
-        <div class="mb-4">
-            <label for="formation" class="block font-medium">Formation</label>
-            <input id="formation" type="text" name="formation" class="w-full border rounded p-2">
-        </div>
-
-        <!-- Niveau d’études -->
-        <div class="mb-4">
-            <label for="niveau_etude" class="block font-medium">Niveau d’études</label>
-            <input id="niveau_etude" type="text" name="niveau_etude" class="w-full border rounded p-2">
-        </div>
-
-        <!-- Téléphone -->
-        <div class="mb-4">
-            <label for="telephone" class="block font-medium">Téléphone</label>
-            <input id="telephone" type="text" name="telephone" class="w-full border rounded p-2">
-        </div>
-
-        <!-- Adresse -->
-        <div class="mb-4">
-            <label for="adresse" class="block font-medium">Adresse</label>
-            <input id="adresse" type="text" name="adresse" class="w-full border rounded p-2">
-        </div>
-
-        <!-- Email -->
-        <div class="mb-4">
-            <label for="email" class="block font-medium">Email</label>
-            <input id="email" type="email" name="email" class="w-full border rounded p-2" required>
-        </div>
-
-        <!-- Mot de passe -->
-        <div class="mb-4">
-            <label for="password" class="block font-medium">Mot de passe</label>
-            <input id="password" type="password" name="password" class="w-full border rounded p-2" required>
-        </div>
-
-        <!-- Confirmation -->
-        <div class="mb-4">
-            <label for="password_confirmation" class="block font-medium">Confirmer le mot de passe</label>
-            <input id="password_confirmation" type="password" name="password_confirmation" class="w-full border rounded p-2" required>
-        </div>
-
-        <button type="submit" class="bg-blue-500 text-gray-100 px-4 py-2 rounded">Créer</button>
-    </form>
-</div>
+<form method="POST" action="{{ route('admin.stagiaires.store') }}" class="panel panel-body max-w-3xl">
+    @csrf
+    <div class="grid gap-x-4 sm:grid-cols-2">
+        <div class="field"><label for="nom" class="label">Nom</label><input id="nom" type="text" name="nom" value="{{ old('nom') }}" class="input" required></div>
+        <div class="field"><label for="prenom" class="label">Prénom</label><input id="prenom" type="text" name="prenom" value="{{ old('prenom') }}" class="input" required></div>
+        <div class="field"><label for="formation" class="label">Formation</label><input id="formation" type="text" name="formation" value="{{ old('formation') }}" class="input"></div>
+        <div class="field"><label for="niveau_etude" class="label">Niveau d'études</label><input id="niveau_etude" type="text" name="niveau_etude" value="{{ old('niveau_etude') }}" class="input"></div>
+        <div class="field"><label for="telephone" class="label">Téléphone</label><input id="telephone" type="text" name="telephone" value="{{ old('telephone') }}" class="input"></div>
+        <div class="field"><label for="adresse" class="label">Adresse</label><input id="adresse" type="text" name="adresse" value="{{ old('adresse') }}" class="input"></div>
+        <div class="field sm:col-span-2"><label for="email" class="label">Adresse e-mail</label><input id="email" type="email" name="email" value="{{ old('email') }}" class="input" required></div>
+        <div class="field"><label for="password" class="label">Mot de passe</label><input id="password" type="password" name="password" class="input" required></div>
+        <div class="field"><label for="password_confirmation" class="label">Confirmation</label><input id="password_confirmation" type="password" name="password_confirmation" class="input" required></div>
+    </div>
+    <div class="flex items-center gap-3">
+        <button type="submit" class="btn-primary">Créer le compte</button>
+        <a href="{{ route('admin.stagiaires.index') }}" class="btn-secondary">Annuler</a>
+    </div>
+</form>
 @endsection
